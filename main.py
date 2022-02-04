@@ -4,6 +4,8 @@ from os.path import exists
 import win32clipboard
 import os
 from PIL import Image
+from pystray import Icon as icon, Menu, MenuItem as item
+import pystray
 
 RECORDING = False
 WORD = ""
@@ -60,7 +62,17 @@ def on_press(key):
                 WORD = ""
 
 # Collect events until released
-with keyboard.Listener(
-        on_press=on_press) as listener:
-        listener.join()
+listener = keyboard.Listener(on_press=on_press)
+listener.start()
+temp_iterable = []
+image = Image.open('keyboard.ico')
+icon = pystray.Icon('discord-emotes',image,'discord-emotes',temp_iterable)
+menu = Menu(item('quit',lambda : icon.stop()),)
+icon.menu = menu
+icon.run()
+
+
+
+
+
 
